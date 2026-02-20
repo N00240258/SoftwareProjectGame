@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     private GroundController _groundController;
-
     PlayerInput playerInput;
     InputAction moveAction;
     [SerializeField] float speed = 5;
@@ -33,7 +32,8 @@ public class PlayerController : MonoBehaviour {
     void MovePlayer()
     {
         UnityEngine.Vector3 direction = moveAction.ReadValue<UnityEngine.Vector3>();
-        transform.position += new UnityEngine.Vector3(direction.x, 0, direction.y) * speed * Time.deltaTime;
+        mover = new UnityEngine.Vector3(direction.x, 0, direction.y) * speed * transform.localRotation.eulerAngles.y * Time.deltaTime;
+        transform.position += UnityEngine.Quaternion.AngleAxis(transform.localRotation.eulerAngles.y, mover);
         if(_groundController.isGrounded){
             transform.position += new UnityEngine.Vector3(0, direction.z * jump , 0) * speed * Time.deltaTime;
         }
