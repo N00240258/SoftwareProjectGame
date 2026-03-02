@@ -39,7 +39,6 @@ public class ThirdPersonMovement : MonoBehaviour
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
 
-
         controller.Move(_direction * Time.deltaTime);
 
         if(direction.magnitude >= 0.1f)
