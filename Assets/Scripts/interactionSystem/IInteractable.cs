@@ -1,7 +1,7 @@
-// using UnityEngine;
+using UnityEngine;
 
-// public class IInteractable : MonoBehaviour
-// {
-//     public string InteractionPrompt { get;};
-//     public bool Interactor(Interactor interactor);
-// }
+public interface IInteractable
+{
+    public string InteractionPrompt { get; }
+    public bool Interact(Interactor interactor);
+}
