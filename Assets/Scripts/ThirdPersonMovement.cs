@@ -96,7 +96,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         // adds one to number of jumps and adds jump power to velocity to allow for the player to actually jump in the world
         _numberOfJumps++;
-        _velocity += jumpPower / _numberOfJumps;
+        _velocity += jumpPower;
     }
 
     private IEnumerator WaitForLanding()
