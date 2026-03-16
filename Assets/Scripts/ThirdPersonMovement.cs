@@ -9,7 +9,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public CharacterController controller;
     public Transform cam;
 
-    public float speed = 6f;
+    public float speed = 10f;
     public float sprintMult = 1.5f;
 
     private float _gravity = -9.81f;
