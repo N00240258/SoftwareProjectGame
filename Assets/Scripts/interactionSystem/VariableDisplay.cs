@@ -1,16 +1,17 @@
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class VariableDisplay : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private TextMeshProUGUI _inventorySpace;
+    [SerializeField] private TextMeshProUGUI _inventorySize;
+    [SerializeField] private TextMeshProUGUI _money;
 
-    // Update is called once per frame
-    void Update()
+    public void inventoryUpdate(Inventory inventory)
     {
-        
+        _inventorySpace.text = inventory.inventorySpace.ToString();
+        _inventorySize.text = inventory.inventorySize.ToString();
+        _money.text = inventory.money.ToString()+ "$";
     }
 }

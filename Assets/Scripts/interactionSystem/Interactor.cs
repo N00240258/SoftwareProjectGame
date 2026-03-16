@@ -12,8 +12,18 @@ public class Interactor : MonoBehaviour
     [SerializeField] private interactionPromptUI _interactionPromptUI;
     private readonly Collider[] _colliders = new Collider[3];
     [SerializeField] private int _numFound;
-    
+    [SerializeField] private VariableDisplay _variableDisplay;
+
+
+    public GameObject Player;
+    private Inventory inventory;
     private IInteractable _interactable;
+
+    void Start()
+    {
+        inventory = Player.GetComponent<Inventory>();
+        _variableDisplay.inventoryUpdate(inventory);
+    }
 
     void Update()
     {
@@ -27,7 +37,11 @@ public class Interactor : MonoBehaviour
             {
                 if(!_interactionPromptUI.IsDisplayed) _interactionPromptUI.SetUp(_interactable.InteractionPrompt);
 
-                if(Keyboard.current.eKey.wasPressedThisFrame) _interactable.Interact(this);
+                if(Keyboard.current.eKey.wasPressedThisFrame) 
+                {
+                    _interactable.Interact(this);
+                    _variableDisplay.inventoryUpdate(inventory);
+                }
             }
         }
         else
