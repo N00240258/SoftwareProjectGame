@@ -23,10 +23,12 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
+
         
     // Update is called once per frame
     void Update()
     {
+        
         Cursor.lockState = CursorLockMode.Locked;
         applyGravity();
         applyMovement();
@@ -110,5 +112,5 @@ public class ThirdPersonMovement : MonoBehaviour
 
     // controller.isGrounded is a built in unity function to check if the character controller is touching the floor
     // this essentially puts that into a variable "IsGrounded()" which helps with readability
-    private bool IsGrounded() => controller.isGrounded;
+    public bool IsGrounded() => controller.isGrounded;
 }
