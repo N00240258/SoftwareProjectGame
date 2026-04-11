@@ -1,5 +1,7 @@
 using NUnit.Framework;
+using System.Collections;
 using UnityEngine;
+
 
 public class Animator : MonoBehaviour
 {
@@ -12,28 +14,56 @@ public class Animator : MonoBehaviour
     {
         anim = GetComponent<Animation>();
         movement = Player.GetComponent<ThirdPersonMovement>();
+
+        anim["Armature_Walk"].speed = 2.0f;
+        anim["Armature_JumpObjectReaction"].speed = 2.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKey(KeyCode.Space))
+        {
+            anim.Play("Armature_JumpObjectReaction");
+        }
 
-        if(movement.IsGrounded()){
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                anim.Play("Armature_Jump");
-            }
-            
+        if(movement.isGrounded){
             if (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0 )
             {
-                anim.Play("Armature_Run");
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    anim.Play("Armature_Run");
+                }
+                else
+                {
+                    anim.Play("Armature_Walk");
+                }
             }
             else
             {
-                // anim.Stop();
-                anim.Play("Armature_Wait");
+                if(!anim.IsPlaying("Armature_Land"))
+                {
+                    anim.Play("Armature_Wait");
+                }
             }
         }
+        else if(!movement.isGrounded)
+        {
+            // Debug.Log(anim.IsPlaying("Armature_Fall"));
+            if (anim.IsPlaying("Armature_Fall") == false)
+            {
+                anim.Play("Armature_Fall");
+            }
+            
+            StartCoroutine(WaitForLanding());
+        }
+    }
+
+    private IEnumerator WaitForLanding()
+    {
+        yield return new WaitUntil(() => movement.isGrounded);
+        // yield return new WaitUntil(movement.isGrounded);
+
+        anim.Play("Armature_Land");
     }
 }

@@ -9,7 +9,9 @@ public class Interactor : MonoBehaviour
     [SerializeField] private Transform _interactionPoint;
     [SerializeField] private float _interactionPointRadius = 0.5f;
     [SerializeField] private LayerMask _interactableMask;
+    [SerializeField] private Shop _shopUI;
     [SerializeField] private interactionPromptUI _interactionPromptUI;
+    
     private readonly Collider[] _colliders = new Collider[3];
     [SerializeField] private int _numFound;
     [SerializeField] private VariableDisplay _variableDisplay;
@@ -48,6 +50,12 @@ public class Interactor : MonoBehaviour
         {
             if (_interactable != null )_interactable = null;
             if (_interactionPromptUI.IsDisplayed) _interactionPromptUI.Close();
+            if (_shopUI._canvas.activeSelf)
+            {
+            _shopUI._canvas.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            }
+                
         }
     }
     

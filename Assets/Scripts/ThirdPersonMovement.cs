@@ -8,6 +8,7 @@ public class ThirdPersonMovement : MonoBehaviour
 {
     public CharacterController controller;
     public Transform cam;
+    public GameObject Player;
 
     public float speed = 10f;
     public float sprintMult = 1.5f;
@@ -18,18 +19,27 @@ public class ThirdPersonMovement : MonoBehaviour
     private int _numberOfJumps;
     [SerializeField] private int maxNumberOfJumps = 2;
 
-    private float _velocity;
+    float radius;
+    Vector3 pos;
+    public bool isGrounded;
+    [SerializeField] private LayerMask groundedCheck;
+    
+    public float _velocity;
     private Vector3 _direction;
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
 
-        
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        var capsulecollider = Player.GetComponent<CapsuleCollider>();
+        radius = capsulecollider.radius * 1f;
+    }    
+    
     // Update is called once per frame
     void Update()
     {
-        
-        Cursor.lockState = CursorLockMode.Locked;
         applyGravity();
         applyMovement();
     }
@@ -40,7 +50,11 @@ public class ThirdPersonMovement : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-
+        
+        // puts a sphere below the player to check if they are touching the floor
+        // it is better to use this rather than unity's built in grounded check
+        pos = transform.position + Vector3.down*(radius*1.5f);
+        isGrounded = Physics.CheckSphere(pos, radius, groundedCheck);
 
         controller.Move(_direction * Time.deltaTime);
 
@@ -59,20 +73,20 @@ public class ThirdPersonMovement : MonoBehaviour
             // if the left shift key is pressed changes the movement function to add a sprint multiplier
             if (Input.GetKey(KeyCode.LeftShift))
             {
-            controller.Move(moveDir.normalized * (speed * sprintMult) * Time.deltaTime);
+                controller.Move(moveDir.normalized * (speed * sprintMult) * Time.deltaTime);
             }
             else
             {
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                controller.Move(moveDir.normalized * speed * Time.deltaTime);
             }
         }
     }
 
-    private void applyGravity()
+    public void applyGravity()
     {
         // checks if the player is on the ground and sets the velocity to -1
         // this is to stop the velocity from increasing infinitely so fall speed stays the same at the beginning
-        if (IsGrounded() && _velocity < 0.0f)
+        if (isGrounded == true && _velocity < 0.0f)
         {
             _velocity = -1.0f;
         }
@@ -92,7 +106,7 @@ public class ThirdPersonMovement : MonoBehaviour
         if (!context.started) return;
 
         // if the character is continued and still has jumps available then continue
-        if (!IsGrounded() && _numberOfJumps >= maxNumberOfJumps) return;
+        if (!isGrounded && _numberOfJumps >= maxNumberOfJumps) return;
 
         // when jumping the StartCoroutine waits for the player to be grounded again to reset jumps to 0 so that the player can continue to jump and double jump
         if (_numberOfJumps == 0) StartCoroutine(WaitForLanding());
@@ -113,4 +127,10 @@ public class ThirdPersonMovement : MonoBehaviour
     // controller.isGrounded is a built in unity function to check if the character controller is touching the floor
     // this essentially puts that into a variable "IsGrounded()" which helps with readability
     public bool IsGrounded() => controller.isGrounded;
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(pos, radius);
+    }
 }

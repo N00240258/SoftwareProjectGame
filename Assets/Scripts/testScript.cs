@@ -1,7 +1,10 @@
 using UnityEngine;
 
 public class testScript : MonoBehaviour
-{
+{   
+    // early script to test changing variables between scripts
+    // this just changes the sprint mult
+
     public GameObject Player;
     private ThirdPersonMovement playerMovement;
 
