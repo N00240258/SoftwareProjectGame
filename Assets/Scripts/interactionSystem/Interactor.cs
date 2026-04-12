@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 public class Interactor : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Interactor : MonoBehaviour
     private readonly Collider[] _colliders = new Collider[3];
     [SerializeField] private int _numFound;
     [SerializeField] private VariableDisplay _variableDisplay;
+    [SerializeField] public CinemachineCamera _camera;
+
 
 
     public GameObject Player;
@@ -53,6 +56,8 @@ public class Interactor : MonoBehaviour
             if (_shopUI._canvas.activeSelf)
             {
             _shopUI._canvas.SetActive(false);
+            _camera.GetComponent<CinemachineInputAxisController>().enabled = true;
+
             Cursor.lockState = CursorLockMode.Locked;
             }
                 

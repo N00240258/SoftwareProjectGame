@@ -16,8 +16,8 @@ public class ThirdPersonMovement : MonoBehaviour
     private float _gravity = -9.81f;
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float jumpPower;
-    private int _numberOfJumps;
-    [SerializeField] private int maxNumberOfJumps = 2;
+    public int _numberOfJumps;
+    [SerializeField] public int maxNumberOfJumps = 2;
 
     float radius;
     Vector3 pos;
@@ -86,7 +86,7 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         // checks if the player is on the ground and sets the velocity to -1
         // this is to stop the velocity from increasing infinitely so fall speed stays the same at the beginning
-        if (isGrounded == true && _velocity < 0.0f)
+        if (isGrounded && _velocity < 0.0f)
         {
             _velocity = -1.0f;
         }
@@ -109,7 +109,7 @@ public class ThirdPersonMovement : MonoBehaviour
         if (!isGrounded && _numberOfJumps >= maxNumberOfJumps) return;
 
         // when jumping the StartCoroutine waits for the player to be grounded again to reset jumps to 0 so that the player can continue to jump and double jump
-        if (_numberOfJumps == 0) StartCoroutine(WaitForLanding());
+        if (_numberOfJumps >= 0) StartCoroutine(WaitForLanding());
 
         // adds one to number of jumps and adds jump power to velocity to allow for the player to actually jump in the world
         _numberOfJumps++;
@@ -118,8 +118,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private IEnumerator WaitForLanding()
     {
-        yield return new WaitUntil(() => !IsGrounded());
-        yield return new WaitUntil(IsGrounded);
+        yield return new WaitUntil(() => !isGrounded);
+        yield return new WaitUntil(() => isGrounded);
 
         _numberOfJumps = 0;
     }

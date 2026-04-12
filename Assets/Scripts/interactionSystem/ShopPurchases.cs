@@ -16,7 +16,8 @@ public class ShopPurchases : MonoBehaviour
 
     [SerializeField] public GameObject _canvas;
     [SerializeField] private VariableDisplay _variableDisplay;
-    public GameObject _player;
+    [SerializeField] public GameObject _player;
+
     private Inventory inventory;
     private ThirdPersonMovement movement;
 

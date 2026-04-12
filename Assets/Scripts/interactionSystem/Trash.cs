@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 
 public class Trash : MonoBehaviour, IInteractable
@@ -15,7 +16,11 @@ public class Trash : MonoBehaviour, IInteractable
         var inventory = interactor.GetComponent<Inventory>();
 
         // if there is no inventory for some reason then the script stops
-        if (inventory == null) return false;
+        if (inventory == null)
+        {
+            Debug.Log("Inventory not found");
+            return false;
+        } 
 
         // if there is enough space in the inventory after picking up the object, allow the player to pick up the object
         if(inventory.inventorySpace + _trashSize <= inventory.inventorySize){
@@ -30,11 +35,12 @@ public class Trash : MonoBehaviour, IInteractable
             gameObject.layer = 0;
 
             // changes certain components of the object to make it disappear but allow the particle animation to continue playing
-            gameObject.GetComponent<Collider>().isTrigger = true;
+            // gameObject.GetComponent<Collider>().isTrigger = true;
             gameObject.GetComponent<MeshRenderer>().enabled = false;
 
             // deletes the game object after 1 seconds (when the animation is finished) and returns true finishing the script as a success
-            Destroy(gameObject, 1);
+            // Destroy(gameObject, 1);
+            Destroy(transform.parent.gameObject, 1);
             return true;
         }
         
