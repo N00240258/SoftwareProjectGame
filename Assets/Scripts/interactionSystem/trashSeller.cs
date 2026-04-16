@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
 
 public class trashSeller : MonoBehaviour, IInteractable
 {
     [SerializeField] private string _prompt;
+    [SerializeField] private TextMeshProUGUI _popUpText;
 
     public string InteractionPrompt => _prompt;
 
@@ -20,11 +22,14 @@ public class trashSeller : MonoBehaviour, IInteractable
             
             // adds the inventory space to the money and then resets the space to 0
             inventory.money += inventory.inventorySpace;
+            _popUpText.text = "Sold: +" + inventory.inventorySpace +"$";
+
             inventory.inventorySpace = 0;
 
             return true;
         }
         
+        _popUpText.text = "Empty!";
         Debug.Log("Nothing to sell!");
         return false;
     }

@@ -5,16 +5,19 @@ using TMPro;
 
 public class ShopPurchases : MonoBehaviour
 {
-    [SerializeField] private int _sizePrice;
-    [SerializeField] private int _speedPrice;
+    [SerializeField] public int _sizePrice;
+    [SerializeField] public int _speedPrice;
     
     [SerializeField] private int _sizeIncrease;
     [SerializeField] private int _speedIncrease;
 
+    [SerializeField] private Button sizeButton;
+    [SerializeField] private Button speedButton;
+
     [SerializeField] private TextMeshProUGUI _sizeButtonText;
     [SerializeField] private TextMeshProUGUI _speedButtonText;
 
-    [SerializeField] public GameObject _canvas;
+    [SerializeField] public GameObject _shopUI;
     [SerializeField] private VariableDisplay _variableDisplay;
     [SerializeField] public GameObject _player;
 
@@ -40,6 +43,8 @@ public class ShopPurchases : MonoBehaviour
 
             _sizeButtonText.text = "Price: " + _sizePrice + "$";
         }
+        
+        UpdateButtons();
     }
 
     public void IncreaseSpeed()
@@ -52,6 +57,29 @@ public class ShopPurchases : MonoBehaviour
             _variableDisplay.inventoryUpdate(inventory);
 
             _speedButtonText.text = "Price: " + _speedPrice + "$";
+        }
+
+        UpdateButtons();
+    }
+
+    public void UpdateButtons()
+    {
+        if(inventory.money < _speedPrice)
+        {
+            speedButton.interactable = false;
+        }
+        else
+        {
+            speedButton.interactable = true;
+        }
+
+        if(inventory.money < _sizePrice)
+        {
+            sizeButton.interactable = false;
+        }
+        else
+        {
+            sizeButton.interactable = true;
         }
     }
 }

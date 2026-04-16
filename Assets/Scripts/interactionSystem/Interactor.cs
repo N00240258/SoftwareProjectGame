@@ -10,7 +10,7 @@ public class Interactor : MonoBehaviour
     [SerializeField] private Transform _interactionPoint;
     [SerializeField] private float _interactionPointRadius = 0.5f;
     [SerializeField] private LayerMask _interactableMask;
-    [SerializeField] private Shop _shopUI;
+    [SerializeField] private Shop _shop;
     [SerializeField] private interactionPromptUI _interactionPromptUI;
     
     private readonly Collider[] _colliders = new Collider[3];
@@ -28,6 +28,7 @@ public class Interactor : MonoBehaviour
     {
         inventory = Player.GetComponent<Inventory>();
         _variableDisplay.inventoryUpdate(inventory);
+        // _shopUI = _shop.GetComponent<>();
     }
 
     void Update()
@@ -53,9 +54,9 @@ public class Interactor : MonoBehaviour
         {
             if (_interactable != null )_interactable = null;
             if (_interactionPromptUI.IsDisplayed) _interactionPromptUI.Close();
-            if (_shopUI._canvas.activeSelf)
+            if (_shop._shopUI.activeSelf)
             {
-            _shopUI._canvas.SetActive(false);
+            _shop._shopUI.SetActive(false);
             _camera.GetComponent<CinemachineInputAxisController>().enabled = true;
 
             Cursor.lockState = CursorLockMode.Locked;
